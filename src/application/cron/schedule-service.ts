@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import { scheduleJob } from 'node-schedule';
-import { IScheduleService } from '../interfaces';
+import { IScheduleService } from '../../interfaces';
 
 @injectable()
 export class NodeScheduler implements IScheduleService {

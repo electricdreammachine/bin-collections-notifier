@@ -8,18 +8,15 @@ import { EnvironmentConfig } from '../types';
 @injectable()
 export class BinCollectionsNotifier {
     private _collectionsService: ICollectionsService;
-    private _scheduleService: IScheduleService;
     private _subscriptionRepository: ISubscriptionRepository;
     private config: EnvironmentConfig;
 
     constructor(
         @inject(dependencies.collectionsService) collectionsService: ICollectionsService,
-        @inject(dependencies.scheduleService) scheduleService: IScheduleService,
         @inject(dependencies.subscriptionRepository) subscriptionRepository: ISubscriptionRepository,
         @inject(dependencies.configuration) config: EnvironmentConfig,
     ) {
         this._collectionsService = collectionsService;
-        this._scheduleService = scheduleService;
         this._subscriptionRepository = subscriptionRepository;
         this.config = config;
     }
@@ -38,7 +35,11 @@ export class BinCollectionsNotifier {
         return this._subscriptionRepository.getSubscriptionsByTime(upcomingHourCronString)
     }
 
-    scheduleCheckForMatchingSubscriptions() {
-        return this._scheduleService.schedule(this.config.SUBSCRIPTIONS_POLL_CRON, this.notifySubscribersForUpcomingHour)
+    async notifySubscribersForUpcomingHour() {
+        const subscribers = await this.getSubscribersForUpcomingHour();
+
+        subscribers.forEach((subscriber) => {
+            //notify
+        })
     }
 }

@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
-import dependencies from '../dependencies';
-import { ISubscriptionRepository, IDatabaseClient } from '../interfaces';
-import { Subscription } from '../types';
+import dependencies from '../../dependencies';
+import { IDatabaseClient, ISubscriptionRepository } from '../../interfaces';
+import { Subscription } from '../../types';
 
 @injectable()
 export class SubscriptionRepository implements ISubscriptionRepository {

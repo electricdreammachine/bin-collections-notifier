@@ -1,8 +1,8 @@
 import { injectable, inject } from 'inversify';
 import { MongoClient } from 'mongodb';
-import dependencies from '../dependencies';
-import { IDatabaseClient } from '../interfaces';
-import { EnvironmentConfig } from '../types';
+import dependencies from '../../dependencies';
+import { IDatabaseClient } from '../../interfaces';
+import { EnvironmentConfig } from '../../types';
 
 @injectable()
 export class MongoDatabaseClient implements IDatabaseClient {

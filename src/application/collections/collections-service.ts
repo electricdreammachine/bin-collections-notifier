@@ -1,8 +1,8 @@
 import { injectable, inject } from 'inversify';
 import fetch from 'node-fetch';
-import dependencies from '../dependencies';
-import { ICollectionsService } from '../interfaces';
-import { EnvironmentConfig, Collection } from '../types';
+import dependencies from '../../dependencies';
+import { ICollectionsService } from '../../interfaces';
+import { EnvironmentConfig, Collection } from '../../types';
 
 @injectable()
 export class CollectionsService implements ICollectionsService {

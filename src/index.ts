@@ -1,7 +1,7 @@
-import { BinCollectionsNotifier } from './application';
 import container from './inversify.config';
 import dependencies from './dependencies';
+import { Orchestrator } from './application/orchestrator';
 
-const notifier: BinCollectionsNotifier = container.get(dependencies.main);
+const orchestrator: Orchestrator = container.get(dependencies.binCollectionsNotifier);
 
-notifier.start();
+orchestrator.start();

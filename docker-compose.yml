@@ -12,6 +12,7 @@ services:
       - "3000:3000"
     links:
       - mongo
+      - redis
   mongo:
     container_name: mongo
     image: mongo
@@ -20,3 +21,11 @@ services:
     # command: ["--auth"]
     ports:
       - "27017:27017"
+  redis:
+    image: redis:alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    hostname: redis
+    networks:
+      - redis
+    volumes:
+      - ./redis-data:/data/redis

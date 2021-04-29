@@ -4,5 +4,6 @@ export default {
     scheduleService: Symbol.for("ScheduleService"),
     subscriptionRepository: Symbol.for("SubscriptionRepository"),
     configuration: Symbol.for("Configuration"),
-    main: Symbol.for("main"),
+    binCollectionsNotifier: Symbol.for("BinCollectionsNotifier"),
+    orchestrator: Symbol.for("Orchestrator"),
 }
