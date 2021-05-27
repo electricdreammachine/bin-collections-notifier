@@ -48,15 +48,18 @@ export class BinCollectionsNotifier {
     }
 
     private getUpcomingHour() {
-        const nextHourDateTimeUTC = add(endOfHour(Date.now()), { seconds: 1 })
+        return add(endOfHour(Date.now()), { seconds: 1 })
+    }
+
+    private getZonedUpcomingHour() {
         // happy hard-coding this to uk timezone since it's a location bound app by nature
-        const zonedNextHourDateTime = utcToZonedTime(nextHourDateTimeUTC, 'Europe/London')
+        const zonedNextHourDateTime = utcToZonedTime(this.getUpcomingHour(), 'Europe/London')
 
         return zonedNextHourDateTime;
     }
 
     async getSubscribersForUpcomingHour() {
-        const upcomingHourCronString = `0 ${this.getUpcomingHour().getHours()} * * *`
+        const upcomingHourCronString = `0 ${this.getZonedUpcomingHour().getHours()} * * *`
 
         return this._subscriptionRepository.getSubscriptionsByTime(upcomingHourCronString)
     }
