@@ -1,7 +1,10 @@
-export { CollectionsService } from './collections/collections-service';
-export { MongoDatabaseClient } from './database/mongo-client';
-export { NodeScheduler } from './cron/schedule-service';
-export { SubscriptionRepository } from './subscriptions/subscription-repository';
-export { Configuration } from './configuration/configuration';
+export { CollectionsService } from './collections'
+export { MongoDatabaseClient } from './database';
+export { NodeScheduler } from './cron';
+export { SubscriptionRepository } from './subscriptions';
+export { Configuration } from './configuration';
+export { QueueService } from './queue';
 export { BinCollectionsNotifier } from './main';
 export { Orchestrator } from './orchestrator';
+export { TwilioSMSNotifier } from './notifications';
+export { MessageFormatter } from './messages';

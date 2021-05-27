@@ -4,4 +4,6 @@ export type EnvironmentConfig = {
     MONGO_USER?: string;
     MONGO_PASS?: string;
     SUBSCRIPTIONS_POLL_CRON?: string;
+    TWILIO_SID?: string;
+    TWILIO_AUTH_TOKEN?: string;
 }

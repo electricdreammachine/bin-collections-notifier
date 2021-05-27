@@ -1,5 +1,5 @@
 export type Subscription = {
-    uniqueAddressId: string;
+    addressId: string;
     phoneNumber: string;
     time: string;
 }

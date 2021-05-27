@@ -4,10 +4,13 @@ services:
     container_name: bin-collections-notifier
     build: .
     environment:
-      - API_URL=https://vigilant-walker-306711.nw.r.appspot.com/
+      - API_URL=https://vigilant-walker-306711.nw.r.appspot.com
       - MONGO_USER=${MONGO_USER}
       - MONGO_PASS=${MONGO_PASS}
-      - SUBSCRIPTIONS_POLL_CRON="55 18 * * *"
+      - TWILIO_SID=${TWILIO_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_FROM_NUMBER=${TWILIO_FROM_NUMBER}
+      - SUBSCRIPTIONS_POLL_CRON="55 * * * *"
     ports:
       - "3000:3000"
     links:
@@ -18,14 +21,12 @@ services:
     image: mongo
     volumes:
       - ./data:/data/db
-    # command: ["--auth"]
+    command: ["--auth"]
     ports:
       - "27017:27017"
   redis:
     image: redis:alpine
     command: ["redis-server", "--appendonly", "yes"]
     hostname: redis
-    networks:
-      - redis
     volumes:
       - ./redis-data:/data/redis

@@ -1,0 +1,3 @@
+export enum Messages {
+    UPCOMING_COLLECTION = 'UPCOMING_COLLECTION',
+}
