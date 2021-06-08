@@ -1,22 +1,37 @@
-import { injectable } from 'inversify'
-import { IQueueService } from '../../interfaces'
+import { injectable, inject } from 'inversify'
+import { IQueueService, ILoggerService } from '../../interfaces'
 import BeeQueue from 'bee-queue'
+import dependencies from '../../dependencies';
+import { LogLevels } from '../../constants';
 
 @injectable()
 export class QueueService implements IQueueService {
     private _queue: BeeQueue;
     private _queueName: string;
+    private _logger;
+
+    constructor(
+        @inject(dependencies.logger) logger: ILoggerService,
+    ) {
+        this._logger = logger;
+    }
 
     init() {
-        this._queue = new BeeQueue(this.queueName, {
-            redis: {
-                host: 'redis',
-                port: 6379,
-            },
-            activateDelayedJobs: true,
-        })
+        try {
+            this._queue = new BeeQueue(this.queueName, {
+                redis: {
+                    host: 'redis',
+                    port: 6379,
+                },
+                activateDelayedJobs: true,
+            })
 
-        return this._queue.ready()
+            this._logger.log(LogLevels.info, `Creating queue ${this.queueName}`)
+
+            return this._queue.ready()
+        } catch (e) {
+            this._logger.log(LogLevels.error, `Error creating queue ${this.queueName}: ${e.message}`)
+        }
     }
 
     async enqueueAll(queueItems: any[]) {

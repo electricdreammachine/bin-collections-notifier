@@ -1,7 +1,8 @@
 import { injectable, inject } from 'inversify';
 import fetch from 'node-fetch';
+import { LogLevels } from '../../constants';
 import dependencies from '../../dependencies';
-import { ICollectionsService } from '../../interfaces';
+import { ICollectionsService, ILoggerService } from '../../interfaces';
 import { EnvironmentConfig, Collection } from '../../types';
 
 interface CollectionsResponse {
@@ -16,12 +17,20 @@ interface CollectionsResponse {
 
 @injectable()
 export class CollectionsService implements ICollectionsService {
-    @inject(dependencies.configuration)
-    private config: EnvironmentConfig;
+    private _config;
+    private _logger;
+
+    constructor(
+        @inject(dependencies.configuration) config: EnvironmentConfig,
+        @inject(dependencies.logger) logger: ILoggerService,
+    ) {
+        this._config = config;
+        this._logger = logger;
+    }
 
     async getCollectionsForAddressID(addressID: string): Promise<Collection[]> {
         try {
-            const collectionsResponse = await fetch(`${this.config.API_URL}/collections`, {
+            const collectionsResponse = await fetch(`${this._config.API_URL}/collections`, {
                 method: 'post',
                 body: JSON.stringify({ addressId: addressID }),
             });
@@ -36,9 +45,10 @@ export class CollectionsService implements ICollectionsService {
                     date.type.map(t => responseJson.types[t])
                 ),
             }));
-        }
-        catch {
-            throw new Error();
+        } catch (e) {
+            this._logger.log(LogLevels.error, `An error occured retrieving collections: ${e.message}`)
+
+            throw new Error(e);
         }
     }
 }

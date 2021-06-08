@@ -5,3 +5,4 @@ export { ISubscriptionRepository } from './ISubscriptionRepository';
 export { IQueueService } from './IQueueService';
 export { INotificationsService } from './INotificationsService';
 export { IMessageFormatter } from './IMessageFormatter';
+export { ILoggerService } from './ILoggerService';

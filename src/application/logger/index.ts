@@ -1,0 +1,1 @@
+export { Logger as SimpleNodeLogger } from './logger';

@@ -1,22 +1,25 @@
 import { injectable, inject } from 'inversify';
 import { MongoClient } from 'mongodb';
-import urlencode from 'urlencode';
+import { LogLevels } from '../../constants';
 import dependencies from '../../dependencies';
-import { IDatabaseClient } from '../../interfaces';
+import { IDatabaseClient, ILoggerService } from '../../interfaces';
 import { EnvironmentConfig } from '../../types';
 
 @injectable()
 export class MongoDatabaseClient implements IDatabaseClient {
     private _client: MongoClient;
     private _connection: Promise<any>;
+    private _logger;
 
     private environmentConfig: EnvironmentConfig;
 
     constructor(
         @inject(dependencies.configuration) config: EnvironmentConfig,
+        @inject(dependencies.logger) logger: ILoggerService,
     ) {
         this.environmentConfig = config;
         this._connection = this.connect();
+        this._logger = logger;
     }
 
     public isConnected(): boolean {
@@ -36,10 +39,14 @@ export class MongoDatabaseClient implements IDatabaseClient {
             await client.db("admin").command({ ping: 1 });
 
             this._client = client
+
+            this._logger.log(LogLevels.info, 'Succesfully established database connection');
+
             return true
         }
         catch (e) {
-            console.error(e)
+            this._logger.log(LogLevels.error, 'Error establishing database connection');
+
             return false
         }
     }
@@ -55,6 +62,7 @@ export class MongoDatabaseClient implements IDatabaseClient {
             }).toArray();
         }
         catch (e) {
+            this._logger.log(LogLevels.error, `Error querying database: ${e.message}`);
             throw new Error(e);
         }
     }

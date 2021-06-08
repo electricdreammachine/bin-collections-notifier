@@ -10,4 +10,5 @@ export default {
     queueServiceFactory: Symbol.for("Factory<QueueService>"),
     messageFormatter: Symbol.for("MessageFormatter"),
     notificationService: Symbol.for("NotificationService"),
+    logger: Symbol.for("Logger"),
 }

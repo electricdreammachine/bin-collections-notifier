@@ -8,3 +8,4 @@ export { BinCollectionsNotifier } from './main';
 export { Orchestrator } from './orchestrator';
 export { TwilioSMSNotifier } from './notifications';
 export { MessageFormatter } from './messages';
+export { SimpleNodeLogger } from './logger';

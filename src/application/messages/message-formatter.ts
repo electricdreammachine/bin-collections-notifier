@@ -1,7 +1,8 @@
 import { injectable } from 'inversify'
 import { format } from 'date-fns'
 import { IMessageFormatter } from '../../interfaces'
-import { Collection, Messages } from '../../types'
+import { Collection } from '../../types'
+import { Messages } from '../../constants'
 
 @injectable()
 export class MessageFormatter implements IMessageFormatter {

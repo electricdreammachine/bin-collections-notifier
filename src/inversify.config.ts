@@ -2,7 +2,7 @@ import { Container, interfaces } from "inversify";
 import "reflect-metadata";
 import dependencies from './dependencies';
 import * as application from './application';
-import { ICollectionsService, IDatabaseClient, IScheduleService, ISubscriptionRepository, IQueueService, IMessageFormatter, INotificationsService } from './interfaces';
+import { ICollectionsService, IDatabaseClient, IScheduleService, ISubscriptionRepository, IQueueService, IMessageFormatter, INotificationsService, ILoggerService } from './interfaces';
 import { EnvironmentConfig } from './types';
 
 const container = new Container();
@@ -15,6 +15,7 @@ container.bind<ICollectionsService>(dependencies.collectionsService).to(applicat
 container.bind<IQueueService>(dependencies.queueService).to(application.QueueService)
 container.bind<IMessageFormatter>(dependencies.messageFormatter).to(application.MessageFormatter)
 container.bind<INotificationsService>(dependencies.notificationService).to(application.TwilioSMSNotifier)
+container.bind<ILoggerService>(dependencies.logger).to(application.SimpleNodeLogger).inSingletonScope()
 container.bind<interfaces.Factory<IQueueService>>(dependencies.queueServiceFactory).toFactory<IQueueService>(context =>
     (name): IQueueService => {
         const queueService: IQueueService = context.container.get(dependencies.queueService)
