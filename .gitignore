@@ -2,3 +2,5 @@ node_modules
 data/
 redis-data/
 .env
+dist/
+.DS_Store

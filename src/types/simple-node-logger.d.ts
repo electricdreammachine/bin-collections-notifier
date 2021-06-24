@@ -9,8 +9,10 @@ interface Logger {
     info(message: string): void;
     error(message: string): void;
     debug(message: string): void;
+    setLevel(message: string): void;
 }
 
 declare module 'simple-node-logger' {
     export function createSimpleLogger(opts: loggerOptions): Logger;
+    export function createRollingFileLogger(opts: loggerOptions): Logger;
 }

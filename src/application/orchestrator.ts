@@ -16,7 +16,7 @@ export class Orchestrator {
         @inject(dependencies.binCollectionsNotifier) binCollectionsNotifier: BinCollectionsNotifier,
         @inject(dependencies.scheduleService) scheduleService: IScheduleService,
         @inject(dependencies.configuration) config: EnvironmentConfig,
-        @inject(dependencies.messageFormatter) logger: ILoggerService,
+        @inject(dependencies.logger) logger: ILoggerService,
     ) {
         this.config = config;
         this._scheduleService = scheduleService;
@@ -33,7 +33,7 @@ export class Orchestrator {
     scheduleCheckForMatchingSubscriptions() {
         this._logger.log(LogLevels.info, `Registering scheduled job`)
 
-        return this._scheduleService.schedule(
+        this._scheduleService.schedule(
             this.config.SUBSCRIPTIONS_POLL_CRON,
             this._binCollectionsNotifier.notifySubscribersForUpcomingHour
         )

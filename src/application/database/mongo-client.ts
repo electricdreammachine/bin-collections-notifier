@@ -27,16 +27,14 @@ export class MongoDatabaseClient implements IDatabaseClient {
     }
 
     public async connect(): Promise<boolean> {
-        const uri = `mongodb://${this.environmentConfig.MONGO_USER}:${encodeURIComponent(this.environmentConfig.MONGO_PASS)}@mongo:27017/bin-collections?poolSize=20&writeConcern=majority&authSource=test`;
-
-        const client = new MongoClient(uri, {
+        const client = new MongoClient(this.environmentConfig.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
 
         try {
             await client.connect();
-            await client.db("admin").command({ ping: 1 });
+            await client.db().command({ ping: 1 });
 
             this._client = client
 

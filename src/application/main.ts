@@ -22,7 +22,7 @@ export class BinCollectionsNotifier {
         @inject(dependencies.queueServiceFactory) queueFactory: (name: string) => IQueueService,
         @inject(dependencies.notificationService) notificationsService: INotificationsService,
         @inject(dependencies.messageFormatter) messageFormatter: IMessageFormatter,
-        @inject(dependencies.messageFormatter) logger: ILoggerService,
+        @inject(dependencies.logger) logger: ILoggerService,
     ) {
         this._collectionsService = collectionsService;
         this._subscriptionRepository = subscriptionRepository;
@@ -34,7 +34,10 @@ export class BinCollectionsNotifier {
 
         this._collectionsQueue.processQueue(async (subscription: Subscription) => {
             this._logger.log(LogLevels.debug, `Retrieving collections: Subscription ${subscription._id}`)
+
             const collections = await this._collectionsService.getCollectionsForAddressID(subscription.addressId)
+
+            this._logger.log(LogLevels.debug, `Retrieved collections: Subscription ${collections[0].date}`)
 
             if (isSameDay(new Date(collections[0].date), add(new Date(), { days: 1 }))) {
                 return this._notificationsQueue.enqueueWithDelay({ collection: collections[0], subscription }, this.getUpcomingHour())
@@ -56,26 +59,28 @@ export class BinCollectionsNotifier {
         })
     }
 
-    private getUpcomingHour() {
+    private getUpcomingHour = () => {
         return add(endOfHour(Date.now()), { seconds: 1 })
     }
 
-    private getZonedUpcomingHour() {
+    private getZonedUpcomingHour = () => {
         // happy hard-coding this to uk timezone since it's a location bound app by nature
         const zonedNextHourDateTime = utcToZonedTime(this.getUpcomingHour(), 'Europe/London')
 
         return zonedNextHourDateTime;
     }
 
-    async getSubscribersForUpcomingHour() {
+    private getSubscribersForUpcomingHour = () => {
         const upcomingHourCronString = `0 ${this.getZonedUpcomingHour().getHours()} * * *`
 
-        this._logger.log(LogLevels.debug, `Getting subscribers for ${upcomingHourCronString}`)
+        this._logger.log(LogLevels.info, `Getting subscribers for ${upcomingHourCronString}`)
 
         return this._subscriptionRepository.getSubscriptionsByTime(upcomingHourCronString)
     }
 
-    async notifySubscribersForUpcomingHour() {
+    public notifySubscribersForUpcomingHour = async () => {
+        this._logger.log(LogLevels.info, `Checking for subscribers...`)
+
         const subscribers = await this.getSubscribersForUpcomingHour();
 
         this._logger.log(LogLevels.debug, `Found ${subscribers.length} subscribers`)
