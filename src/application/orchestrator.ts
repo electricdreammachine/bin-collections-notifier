@@ -31,9 +31,9 @@ export class Orchestrator {
     }
 
     scheduleCheckForMatchingSubscriptions() {
-        this._logger.log(LogLevels.info, `Registering scheduled job`)
+        this._logger.log(LogLevels.info, `Registering scheduled job for cron ${this.config.SUBSCRIPTIONS_POLL_CRON}`)
 
-        this._scheduleService.schedule(
+        return this._scheduleService.schedule(
             this.config.SUBSCRIPTIONS_POLL_CRON,
             this._binCollectionsNotifier.notifySubscribersForUpcomingHour
         )

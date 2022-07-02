@@ -3,6 +3,7 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "allowSyntheticDefaultImports": true,
         "target": "es6",
         "noImplicitAny": true,
@@ -10,6 +11,12 @@
         "sourceMap": false,
         "outDir": "dist",
         "baseUrl": ".",
+        "lib": [
+            "es6"
+        ],
+        "types": [
+            "reflect-metadata"
+        ],
         "paths": {
             "*": [
                 "node_modules/*",

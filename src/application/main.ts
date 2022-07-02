@@ -59,7 +59,7 @@ export class BinCollectionsNotifier {
         })
     }
 
-    private getUpcomingHour = () => {
+    private getUpcomingHour() {
         return add(endOfHour(Date.now()), { seconds: 1 })
     }
 

@@ -37,6 +37,8 @@ export class CollectionsService implements ICollectionsService {
 
             const responseJson: CollectionsResponse = await collectionsResponse.json();
 
+            this._logger.log(LogLevels.info, 'Collections request succeeded')
+
             return responseJson.dates.map(date => ({
                 ...date,
                 // @ts-ignore typescript doesn't seem to be aware of this method
